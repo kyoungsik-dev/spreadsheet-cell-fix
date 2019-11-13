@@ -1,0 +1,20 @@
+.Header {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  &-Icon {
+    flex: 0 0 55px;
+    padding: 10px 15px 10px 15px;
+  }
+  &-Body {  
+    flex: 1 1 auto;
+    padding: 10px 15px 10px 0;
+    display: flex;
+    justify-content: space-between;
+    & span {
+      font-size: 20px;
+      line-height: 40px;
+    }
+  }
+}
