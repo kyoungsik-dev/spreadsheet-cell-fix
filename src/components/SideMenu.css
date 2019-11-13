@@ -1,0 +1,9 @@
+.SideMenu {
+  flex: 0 0 250px;
+  padding:15px;
+  border: 1px solid #555;
+  margin-right: 30px;
+}
+.SideMenu-Inner {
+
+}

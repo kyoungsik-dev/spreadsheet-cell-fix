@@ -1,0 +1,26 @@
+.Header {
+  display: flex;
+  width: 100%;
+  color: #fff;
+  background-color:#24292e;
+  transition: 0.5s;
+  &-Icon {
+    width: 70px;
+  }
+  &-Body {
+    display: flex;
+    margin: auto 15px auto 15px;
+    width: 100%;
+  }
+  &-Left {
+    line-height: 40px;
+    font-size: 24px;
+    flex: 1 1 auto;
+  }
+  &-Right {
+    line-height: 40px;
+    flex: 0 0 160px;
+    text-align: right;
+    margin-right: 10px;
+  }
+}

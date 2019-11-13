@@ -1,0 +1,22 @@
+.Order {
+  padding: 50px 0;
+  &-Summary {
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #0366d6;
+    border-radius: 3px;
+    &-key {
+      font-weight: 700;
+      margin-left: 15px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+  &-Box {
+    border: 1px solid #e1e4e8;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+}
