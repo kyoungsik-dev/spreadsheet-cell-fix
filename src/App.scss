@@ -1,10 +1,26 @@
 .App {
-  min-height: 100vh;
-  &-body {
-    flex: 1 1 auto;
-    &-wrapper {
-      padding: 70px 0;
-      display: flex;
-    }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  &-TableArea {
+    position: relative;
+    overflow: hidden;
   }
+  &-Upper,
+  &-Lower {
+    display: flex;
+    flex-direction: row;
+  }
+  &-Border {
+    top: 0;
+    z-index: 20;;
+    position: absolute;
+    border-right: 4px solid #bbb;
+    border-bottom: 4px solid #bbb;
+  }
+}
+
+html {
+  overflow: hidden;
+  overscroll-behavior: none;
 }

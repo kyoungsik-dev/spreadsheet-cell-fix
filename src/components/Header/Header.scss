@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   border-bottom: 1px solid #eee;
-  display: flex;
+  flex: 0 0;
   &-Icon {
     flex: 0 0 55px;
     padding: 10px 15px 10px 15px;
@@ -15,6 +15,17 @@
     & span {
       font-size: 20px;
       line-height: 40px;
+    }
+    &-Right {
+      display: flex;
+    }
+  }
+  form {
+    display: flex;
+    margin-right: 15px;
+    input {
+      width: 100px;
+      margin-right: 5px;
     }
   }
 }

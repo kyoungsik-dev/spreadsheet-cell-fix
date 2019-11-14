@@ -1,0 +1,13 @@
+.Cell {
+  cursor: cell;
+  padding: 4px 10px;
+  display: inline-block;
+  border: 1px solid #e7e7e7;
+  user-select: none;
+  white-space: nowrap;
+  width: 100px;
+  background-color: #fff;
+  &-Label {
+    background-color: #eee;
+  }
+}
