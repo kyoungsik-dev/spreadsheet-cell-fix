@@ -18,6 +18,8 @@ class App extends Component {
     this.setFixedPos = this.setFixedPos.bind(this);
     this.scrollHorizontal = this.scrollHorizontal.bind(this);
     this.scrollVertical = this.scrollVertical.bind(this);
+    
+    this.cell = {H: 34, W: 100}; //셀의 크기
   }
   componentDidMount() {
     const parseData = csv.split('\n').map(o => o.split(','));
@@ -33,11 +35,11 @@ class App extends Component {
         prevEventTime = e.timeStamp;
         const [dx, dy] = [e.wheelDeltaX, e.wheelDeltaY];
 
-        if (Math.abs(dx) > Math.abs(dy)) { //가로 움직임의 경우 1,4분면 이동
+        if (Math.abs(dx) > Math.abs(dy)) {
           this.scrollHorizontal(dx);
         }
 
-        else { //세로 움직임의 경우 3,4분면 이동
+        else {
           this.scrollVertical(dy);
         }
       }
@@ -53,10 +55,11 @@ class App extends Component {
     //왼쪽 스크롤 - 오른쪽으로 더 못감
     if (dx > 0 && this.state.table1_pos.x+1*way > 0) return;
 
-    this.table1_dom.style.transform = `translateX(${(this.state.table1_pos.x+1*way)*100}px)`;
+    //가로 움직임의 경우 1,4분면 이동
+    this.table1_dom.style.transform = `translateX(${(this.state.table1_pos.x+1*way)*this.cell.W}px)`;
     this.setState({table1_pos: {x: this.state.table1_pos.x+1*way, y: this.state.table1_pos.y}});
 
-    this.table4_dom.style.transform = `translate(${(this.state.table4_pos.x+1*way)*100}px, ${this.state.table4_pos.y*34}px)`;
+    this.table4_dom.style.transform = `translate(${(this.state.table4_pos.x+1*way)*this.cell.W}px, ${this.state.table4_pos.y*this.cell.H}px)`;
     this.setState({table4_pos: {x: this.state.table4_pos.x+1*way, y: this.state.table4_pos.y}});
   }
 
@@ -69,10 +72,11 @@ class App extends Component {
     //위쪽 스크롤 - 아래쪽으로 더 못감
     if (dy > 0 && this.state.table3_pos.y+1*way > 0) return;
 
-    this.table3_dom.style.transform = `translateY(${(this.state.table3_pos.y+1*way)*34}px)`;
+    //세로 움직임의 경우 3,4분면 이동
+    this.table3_dom.style.transform = `translateY(${(this.state.table3_pos.y+1*way)*this.cell.H}px)`;
     this.setState({table3_pos: {x: this.state.table3_pos.x, y: this.state.table3_pos.y+1*way}});
 
-    this.table4_dom.style.transform = `translate(${this.state.table4_pos.x*100}px, ${(this.state.table4_pos.y+1*way)*34}px)`;
+    this.table4_dom.style.transform = `translate(${this.state.table4_pos.x*this.cell.W}px, ${(this.state.table4_pos.y+1*way)*this.cell.H}px)`;
     this.setState({table4_pos: {x: this.state.table4_pos.x, y: this.state.table4_pos.y+1*way}});
   }
 
@@ -93,20 +97,26 @@ class App extends Component {
     const table3_data = parseData.slice(y).map(o => o.slice(0, x));
     const table4_data = parseData.slice(y).map(o => o.slice(x));
 
+    const wrapper_width = `${(this.state.size.x + 1) * this.cell.W}px`; // 전체 테이블의 가로길이
+    const table_left_width = `${(this.state.fixedPos.x + 1)*this.cell.W}px`; //왼쪽 테이블의 가로 길이
+    const table_right_width = `${(this.state.size.x - this.state.fixedPos.x)*this.cell.W}px`; //오른쪽 테이블의 가로길이
+    const divider_h_style = {width: "100%", top: `${this.state.fixedPos.y*this.cell.H-2}px`}; //수평선
+    const divider_v_style = {left: `${(this.state.fixedPos.x+1)*this.cell.W-2}px`, height: `${this.state.size.y*this.cell.H}px`}; //수직선
+
     return (
       <div className="App">
         <Header submitValue={this.setFixedPos} />
         <div className="App-TableArea">
-          <div className="App-Upper" style={{width: `${(this.state.size.x + 1) * 100}px`}}>
-            <Table data={table2_data} num={2} fixedPos={this.state.fixedPos} width={`${(this.state.fixedPos.x + 1)*100}px`} />
-            <Table data={table1_data} num={1} fixedPos={this.state.fixedPos} width={`${(this.state.size.x - this.state.fixedPos.x)*100}px`} />
+          <div className="App-Upper" style={{width: wrapper_width}}>
+            <Table data={table2_data} num={2} fixedPos={this.state.fixedPos} width={table_left_width} />
+            <Table data={table1_data} num={1} fixedPos={this.state.fixedPos} width={table_right_width} />
           </div>
-          <div className="App-Lower" style={{width: `${(this.state.size.x + 1) * 100}px`}}>
-            <Table data={table3_data} num={3} fixedPos={this.state.fixedPos} width={`${(this.state.fixedPos.x + 1)*100}px`} />
-            <Table data={table4_data} num={4} fixedPos={this.state.fixedPos} width={`${(this.state.size.x - this.state.fixedPos.x)*100}px`} />
+          <div className="App-Lower" style={{width: wrapper_width}}>
+            <Table data={table3_data} num={3} fixedPos={this.state.fixedPos} width={table_left_width} />
+            <Table data={table4_data} num={4} fixedPos={this.state.fixedPos} width={table_right_width} />
           </div>
-          <div className="App-Border" style={{width: "100%", top: `${this.state.fixedPos.y*34-2}px`}}/>
-          <div className="App-Border" style={{left: `${(this.state.fixedPos.x+1)*100-2}px`, height: `${this.state.size.y*34}px`}}/>
+          <div className="App-Divider" style={divider_h_style}/>
+          <div className="App-Divider" style={divider_v_style}/>
         </div>
       </div>
     );
