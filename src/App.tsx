@@ -26,6 +26,11 @@ class App extends React.Component<{}, State> {
   tableDom1: HTMLElement;
   tableDom3: HTMLElement;
   tableDom4: HTMLElement;
+  parseData: string[][];
+  tableData1: string[][];
+  tableData2: string[][];
+  tableData3: string[][];
+  tableData4: string[][];
   
   constructor(props: {}) {
     super(props);
@@ -44,8 +49,14 @@ class App extends React.Component<{}, State> {
     this.cell = {H: 34, W: 100}; //셀의 크기
   }
   componentDidMount() {
-    const parseData = csv.split('\n').map(o => o.split(','));
-    this.setState({size: {x: parseData[0].length, y: parseData.length}});
+    const {x, y} = this.state.fixedPos;
+    this.parseData = csv.split('\n').map(o => o.split(','));
+    this.tableData1 = this.parseData.slice(0, y).map(o => o.slice(x));
+    this.tableData2 = this.parseData.slice(0, y).map(o => o.slice(0, x));
+    this.tableData3 = this.parseData.slice(y).map(o => o.slice(0, x));
+    this.tableData4 = this.parseData.slice(y).map(o => o.slice(x));
+
+    this.setState({size: {x: this.parseData[0].length, y: this.parseData.length}});
 
     this.tableDom1 = document.getElementById('table_wrapper_1');
     this.tableDom3 = document.getElementById('table_wrapper_3');
@@ -103,22 +114,28 @@ class App extends React.Component<{}, State> {
   }
 
   setFixedPos(o: Position) {
-    if (0 < o.y && o.y < this.state.size.y && o.y % 1 == 0 &&
-        0 < o.x && o.x < this.state.size.x && o.x % 1 == 0) {
+    if (0 < o.y && o.y < this.state.size.y && o.y % 1 === 0 &&
+        0 < o.x && o.x < this.state.size.x && o.x % 1 === 0) {
         this.setState({fixedPos: o});
     } else {
       alert("입력 값이 유효하지 않습니다.");
     }
   }
-
+  shouldComponentUpdate(nextProps: {}, nextState: State) {
+    if (nextState.fixedPos.x === this.state.fixedPos.x &&
+        nextState.fixedPos.y === this.state.fixedPos.y &&
+        nextState.size.x === this.state.size.x &&
+        nextState.size.y === this.state.size.y) {
+      return false;
+    }
+    const {x, y} = nextState.fixedPos;
+    this.tableData1 = this.parseData.slice(0, y).map(o => o.slice(x));
+    this.tableData2 = this.parseData.slice(0, y).map(o => o.slice(0, x));
+    this.tableData3 = this.parseData.slice(y).map(o => o.slice(0, x));
+    this.tableData4 = this.parseData.slice(y).map(o => o.slice(x));
+    return true;
+  }
   render() {
-    const parseData = csv.split('\n').map(o => o.split(','));
-    const {x, y} = this.state.fixedPos;
-    const tableData1 = parseData.slice(0, y).map(o => o.slice(x));
-    const tableData2 = parseData.slice(0, y).map(o => o.slice(0, x));
-    const tableData3 = parseData.slice(y).map(o => o.slice(0, x));
-    const tableData4 = parseData.slice(y).map(o => o.slice(x));
-
     const wrapperWidth = `${(this.state.size.x + 1) * this.cell.W}px`; // 전체 테이블의 가로길이
     const tableLeftWidth = `${(this.state.fixedPos.x + 1)*this.cell.W}px`; //왼쪽 테이블의 가로 길이
     const tableRightWidth = `${(this.state.size.x - this.state.fixedPos.x)*this.cell.W}px`; //오른쪽 테이블의 가로길이
@@ -130,12 +147,12 @@ class App extends React.Component<{}, State> {
         <Header submitValue={this.setFixedPos} />
         <div className="App-TableArea">
           <div className="App-Upper" style={{width: wrapperWidth}}>
-            <Table data={tableData2} num={2} fixedPos={this.state.fixedPos} width={tableLeftWidth} />
-            <Table data={tableData1} num={1} fixedPos={this.state.fixedPos} width={tableRightWidth} />
+            <Table data={this.tableData2} num={2} fixedPos={this.state.fixedPos} width={tableLeftWidth} />
+            <Table data={this.tableData1} num={1} fixedPos={this.state.fixedPos} width={tableRightWidth} />
           </div>
           <div className="App-Lower" style={{width: wrapperWidth}}>
-            <Table data={tableData3} num={3} fixedPos={this.state.fixedPos} width={tableLeftWidth} />
-            <Table data={tableData4} num={4} fixedPos={this.state.fixedPos} width={tableRightWidth} />
+            <Table data={this.tableData3} num={3} fixedPos={this.state.fixedPos} width={tableLeftWidth} />
+            <Table data={this.tableData4} num={4} fixedPos={this.state.fixedPos} width={tableRightWidth} />
           </div>
           <div className="App-Divider" style={dividerHStyle}/>
           <div className="App-Divider" style={dividerVStyle}/>

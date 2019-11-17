@@ -14,7 +14,7 @@ interface Props {
 }
 function Table(props: Props) {
   const zIndex = [,11, 12, 11, 10];
-  const rows = props.data.map((o, i) => {
+  const rows = props.data && props.data.map((o, i) => {
     return <Row num={props.num} data={o} index={(props.num < 3) ? i+1 : i+props.fixedPos.y+1} key={`row-${i}`} />
   });
   return (
