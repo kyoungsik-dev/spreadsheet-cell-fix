@@ -16,6 +16,7 @@ class App extends Component {
       table3_pos: {x: 0, y: 0},
       table4_pos: {x: 0, y: 0}
     };
+    this.setFixedPos = this.setFixedPos.bind(this);
   }
   componentDidMount() {
     const parseData = csv.split('\n').map(o => o.split(','));
@@ -27,7 +28,8 @@ class App extends Component {
 
     let prevEventTime = 0;
     document.addEventListener('mousewheel', (e) => {
-      if (e.timeStamp - prevEventTime > 150) {
+      console.log(e);
+      //if (e.timeStamp - prevEventTime > 5) {
         prevEventTime = e.timeStamp;
 
         const [dx, dy] = [e.wheelDeltaX, e.wheelDeltaY];
@@ -63,8 +65,17 @@ class App extends Component {
           table4_dom.style.transform = `translate(${this.state.table4_pos.x*100}px, ${(this.state.table4_pos.y+1*way)*34}px)`;
           this.setState({table4_pos: {x: this.state.table4_pos.x, y: this.state.table4_pos.y+1*way}});
         }
-      }
+      //}
     });
+  }
+
+  setFixedPos(o) {
+    if (0 < o.y && o.y < this.state.size.y && o.y % 1 == 0 &&
+        0 < o.x && o.x < this.state.size.x && o.x % 1 == 0) {
+        this.setState({fixedPos: o});
+    } else {
+      alert("입력 값이 유효하지 않습니다.");
+    }
   }
   render() {
     const parseData = csv.split('\n').map(o => o.split(','));
@@ -76,10 +87,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Header
-          setRow={(o) => {this.setState({fixedPos: {x : this.state.fixedPos.x, y: o}})}}
-          setCol={(o) => {this.setState({fixedPos: {x: o, y : this.state.fixedPos.y}})}}
-        />
+        <Header submitValue={this.setFixedPos} />
         <div className="App-TableArea">
           <div className="App-Upper" style={{width: `${(this.state.size.x + 1) * 100}px`}}>
             <Table data={table2_data} num={2} fixedPos={this.state.fixedPos} width={`${(this.state.fixedPos.x + 1)*100}px`} />
