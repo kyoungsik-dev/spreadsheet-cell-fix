@@ -1,6 +1,5 @@
 .Cell {
   cursor: cell;
-  padding: 4px 10px;
   display: inline-block;
   border: 1px solid #e7e7e7;
   user-select: none;
@@ -10,5 +9,9 @@
   &-Label {
     background-color: #f5f5f5;
     text-align: center;
+  }
+  &-Text {
+    overflow: hidden;
+    padding: 4px 10px;
   }
 }
