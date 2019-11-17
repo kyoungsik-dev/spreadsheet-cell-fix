@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Cell from '../Cell/Cell';
+import Cell from '../Cell/';
 import './Row.scss';
 
 interface Props {

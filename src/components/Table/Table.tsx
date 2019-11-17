@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Row from '../Row/Row';
+import Row from '../Row/';
 import './Table.scss';
 
 interface Position {

@@ -21,13 +21,13 @@ interface State {
   tablePos4: Position;
 }
 
-class App extends React.Component<undefined, State> {
+class App extends React.Component<{}, State> {
   cell: { H: number; W: number; };
   tableDom1: HTMLElement;
   tableDom3: HTMLElement;
   tableDom4: HTMLElement;
   
-  constructor(props: undefined) {
+  constructor(props: {}) {
     super(props);
     this.state = {
       fixedPos: {x: 5, y: 10},
