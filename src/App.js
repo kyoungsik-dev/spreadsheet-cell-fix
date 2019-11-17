@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Table from './components/Table/';
-import Header from './components/Header/';
+import {Table, Header} from './components/';
 import {csv} from './static/index';
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.scss';

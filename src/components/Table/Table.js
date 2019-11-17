@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Row from '../Row/';
+import {Row} from '../';
 import './Table.scss';
 
 class Table extends Component {
