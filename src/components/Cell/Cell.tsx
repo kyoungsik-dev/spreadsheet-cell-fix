@@ -1,7 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import './Cell.scss';
 
-function Cell(props) {
+interface Props {
+  isLabel: boolean;
+  data: string;
+}
+function Cell(props: Props) {
   return (
     <div className={`Cell ${props.isLabel ? 'Cell-Label' : ''}`} >
       <div className="Cell-Text">

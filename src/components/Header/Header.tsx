@@ -1,9 +1,17 @@
-import React from 'react';
-import {Icon} from '../../static/';
+import * as React from 'react';
+import {Icon} from '../../static';
 import './Header.scss';
 
-class Header extends React.Component {
-  constructor(props) {
+interface Props {
+  submitValue: Function;
+}
+interface State {
+  col: number;
+  row: number;
+}
+
+class Header extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       row: 0,
@@ -15,10 +23,10 @@ class Header extends React.Component {
     this.submitValue = this.submitValue.bind(this);
   }
 
-  setRow(e) {
+  setRow(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({row: Number(e.target.value)});
   }
-  setCol(e) {
+  setCol(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({col: Number(e.target.value)});
   }
   submitValue() {

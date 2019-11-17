@@ -13,6 +13,10 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "ts-loader"
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -29,6 +33,10 @@ module.exports = {
         loader: ["style-loader","css-loader","sass-loader"]
       }
     ]
+  },
+  resolve: {
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.scss', '.json'],
   },
   devServer: {
     port: 3000,
